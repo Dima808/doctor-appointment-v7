@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Запис до лікаря — варіант 7</title>
+<style>
+*{box-sizing:border-box} body{font-family:Arial,sans-serif;background:#eef4f5;color:#17363e;margin:0;padding:40px 20px}main{max-width:720px;margin:auto;background:white;border-radius:16px;padding:36px;box-shadow:0 10px 40px #174c5c12}.eyebrow{font-size:13px;letter-spacing:2px;color:#327477}h1{font-size:32px;margin:16px 0 10px}.intro{line-height:1.6;color:#4f646b}label{display:block;font-weight:bold;margin:20px 0 8px}select,input,button{font:inherit;border-radius:8px}select,input{width:100%;padding:12px;border:1px solid #a7bfc1;background:white} .row{display:grid;grid-template-columns:1fr 1fr;gap:18px}button{padding:13px 20px;cursor:pointer;border:0;background:#146c70;color:white;margin-top:24px;font-weight:bold}button:disabled{background:#819b9d;cursor:default}.result{padding:18px;background:#edf7f2;border-left:4px solid #16815d;line-height:1.6;margin-top:24px}.result:empty{display:none}.note{font-size:13px;color:#62747a;margin-top:28px;line-height:1.5}@media(max-width:500px){main{padding:24px}.row{grid-template-columns:1fr}h1{font-size:26px}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">НАВЧАЛЬНИЙ ПРОЄКТ · ВАРІАНТ 7</div>
+<h1>Запис до лікаря</h1>
+<p class="intro">Оберіть спеціаліста, дату та час прийому. Сторінка сформує підтвердження вашого вибору.</p>
+<form id="bookingForm">
+<label for="doctor">Спеціаліст</label>
+<select id="doctor" required><option value="">Оберіть спеціаліста</option>Сімейний лікар</option><option>Терапевт</option><option>Кардіолог</option></select>
+<div class="row"><div><label for="date">Дата прийому</label><input id="date" type="date" required></div>
+<div><label for="time">Час прийому</label><select id="time" required><option value="">Оберіть час</option><option>09:00</option><option>10:30</option><option>12:00</option><option>14:30</option></select></div></div>
+<button id="bookButton" type="submit">Підтвердити запис</button>
+<!-- FEATURE_BUTTON -->
+</form><p id="result" class="result" role="status" aria-live="polite"></p>
+<p class="note">Демонстрація інтерфейсу. Дані не надсилаються до клініки; реальний медичний прийом не бронюється.</p>
+</main>
+<script>
+const form = document.getElementById('bookingForm');
+const dateInput = document.getElementById('date');
+const result = document.getElementById('result');
+const today = new Date();
+const localDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+dateInput.min = localDate;
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  if (dateInput.value < localDate) {
+    result.textContent = 'Оберіть сьогоднішню або майбутню дату.';
+    return;
+  }
+  const doctor = document.getElementById('doctor').value;
+  const time = document.getElementById('time').value;
+  const formattedDate = dateInput.value.split('-').reverse().join('.');
+  result.textContent = `Запис підтверджено: ${doctor}, ${formattedDate} о ${time}.`;
+  // FEATURE_CONFIRM
+});
+// FEATURE_CANCEL
+</script>
+</body></html>
