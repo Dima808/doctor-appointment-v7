@@ -18,7 +18,7 @@
 <div class="row"><div><label for="date">Дата прийому</label><input id="date" type="date" required></div>
 <div><label for="time">Час прийому</label><select id="time" required><option value="">Оберіть час</option><option>09:00</option><option>10:30</option><option>12:00</option><option>14:30</option></select></div></div>
 <button id="bookButton" type="submit">Підтвердити запис</button>
-<!-- FEATURE_BUTTON -->
+<button id="cancelButton" type="button" hidden style="background:#5c6e75">Скасувати запис</button>
 </form><p id="result" class="result" role="status" aria-live="polite"></p>
 <p class="note">Демонстрація інтерфейсу. Дані не надсилаються до клініки; реальний медичний прийом не бронюється.</p>
 </main>
@@ -40,8 +40,13 @@ form.addEventListener('submit', (event) => {
   const time = document.getElementById('time').value;
   const formattedDate = dateInput.value.split('-').reverse().join('.');
   result.textContent = `Запис підтверджено: ${doctor}, ${formattedDate} о ${time}.`;
-  // FEATURE_CONFIRM
+  document.getElementById('bookButton').disabled = true;
+  document.getElementById('cancelButton').hidden = false;
 });
-// FEATURE_CANCEL
+document.getElementById('cancelButton').addEventListener('click', () => {
+  result.textContent = 'Запис скасовано. Можна обрати інший час.';
+  document.getElementById('bookButton').disabled = false;
+  document.getElementById('cancelButton').hidden = true;
+});
 </script>
 </body></html>
